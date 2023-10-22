@@ -159,3 +159,46 @@ function easeInOutElastic(x) {
                 ? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2
                 : (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1;
 }
+
+let curveSets = [
+    {
+        inCurve: easeInSine,
+        outCurve: easeOutSine,
+    },
+    {
+        inCurve: easeInQuad,
+        outCurve: easeOutQuad,
+    },
+    {
+        inCurve: easeInCubic,
+        outCurve: easeOutCubic,
+    },
+    {
+        inCurve: easeInQuart,
+        outCurve: easeOutQuart,
+    },
+    {
+        inCurve: easeInQuint,
+        outCurve: easeOutQuint,
+    },
+    {
+        inCurve: easeInExpo,
+        outCurve: easeOutExpo,
+    },
+    {
+        inCurve: easeInCirc,
+        outCurve: easeOutCirc,
+    },
+    {
+        inCurve: easeInBack,
+        outCurve: easeOutBack,
+    },
+    {
+        inCurve: easeInBounce,
+        outCurve: easeOutBounce,
+    },
+    {
+        inCurve: easeInElastic,
+        outCurve: easeOutElastic,
+    }
+];

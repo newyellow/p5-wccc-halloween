@@ -3,7 +3,7 @@ let widthNoise;
 
 function initObjNoise() {
     dirNoise = new NYNoiseSet(0.016, 0.024, 0.02);
-    widthNoise = new NYNoiseSet(0.003, 0.003, 0.003);
+    widthNoise = new NYNoiseSet(random(0.001, 0.006), random(0.001, 0.006), random(0.001, 0.006));
 }
 class Ribbon {
     constructor(_startX, _startY, _startWidth, _startDir, _startSpeed) {
@@ -19,8 +19,6 @@ class Ribbon {
         this.startIndex = 0;
         this.endIndex = 0;
 
-        let randomColorChance = random(0, 1);
-
         if (isBlack) {
             let briA = random(0, 80);
             let briB = random(0, 80);
@@ -33,8 +31,6 @@ class Ribbon {
 
             this.colorA = new NYColor(0, 0, briA);
             this.colorB = new NYColor(0, 0, briB);
-
-            
         }
         else {
             let newHueA = processHue(mainHue + random(-hueRange, hueRange));
@@ -73,8 +69,9 @@ class Ribbon {
         this.eyeSizeY = random(0.05, 0.3);
         this.eyeDistRatio = random(0.1, 0.6);
 
-        this.curveIn = easeInSine;
-        this.curveOut = easeOutSine;
+        let targetCurveSet = curveSets[int(random(0, curveSets.length))];
+        this.curveIn = targetCurveSet.inCurve;
+        this.curveOut = targetCurveSet.outCurve;
         this.mouthWidthRatio = random(0.3, 0.43);
         this.mouthHeightRatioA = random(0.0, 0.12);
         this.mouthHeightRatioB = random(0.2, 0.4);
@@ -110,10 +107,11 @@ class Ribbon {
             this.y += -cos(radians(this.nowDir)) * nowSpeed;
 
             if (isMouseOver) {
+                let affectDist = min(width, height) * 0.36;
                 let distToMouse = dist(this.x, this.y, mouseX, mouseY);
-                if (distToMouse < 300) {
+                if (distToMouse < affectDist) {
                     let forceDir = getAngle(mouseX, mouseY, this.x, this.y);
-                    let closeRatio = inverseLerp(300, 0, distToMouse);
+                    let closeRatio = inverseLerp(affectDist, 0, distToMouse);
 
                     this.mouseForceApplyRatio = lerp(this.mouseForceApplyRatio, closeRatio, 0.06);
 

@@ -1,3 +1,14 @@
+//
+// Weekly Creative Coding Challenge Topic 'Halloween / Spooky'
+//
+//
+// Check the challenge page if you would like to join:
+// https://openprocessing.org/curation/78544 
+//
+// Hi Raphaël!
+// I add a refresh button this time, left click to generate a new one!
+// BTW the reason I didn't do it before, is because I use a lot of async code
+// and simple calling setup() would break the work, so have to refresh the whole page!
 
 let ribbons = [];
 let fakeMouseX = 0;
@@ -5,13 +16,13 @@ let fakeMouseY = 0;
 let nowMouseX = 0;
 let nowMouseY = 0;
 
-
 let spawnType = 0;
 let hasStroke = false;
 let isBlack = false;
 let mainHue = 0;
 let hueRange = 0;
 
+let bgColor;
 let nowMouseDegree = 0;
 
 let mainCanvas;
@@ -30,14 +41,16 @@ async function setup() {
   nowMouseX = width / 2;
   nowMouseY = height / 2;
 
+  // trait settings
   // 0: ground, 1: moving point, 2: right, 3: left, 4: center
   spawnType = int(random(0, 5));
-  hasStroke = random() < 0.5;
+  hasStroke = random() < 0.2;
   isBlack = random() < 0.1;
-  isBlack = 1;
+  // trait settings
 
   mainHue = random(0, 360);
   hueRange = random(10, 30);
+  bgColor = new NYColor(mainHue, random(20, 60), random(10, 20), 1.0);
 
   if(hasStroke)
   {
@@ -72,7 +85,7 @@ function draw() {
     let spawnX = 0;
     let spawnY = 0;
     let spawnDir = 0;
-    let spawnDist = random(0.0, 0.1) * min(width, height);
+    let spawnDist = random(0.0, 0.2) * min(width, height);
 
     if (spawnType == 0) {
       spawnX = random(0, width);
@@ -118,7 +131,7 @@ function draw() {
   }
 
 
-  background(0, 0, 12, 0.03);
+  background(bgColor.h, bgColor.s, bgColor.b, 0.06);
 
   for (let i = 0; i < ribbons.length; i++) {
     ribbons[i].draw();
@@ -132,9 +145,9 @@ function moveOverCanvas() {
 }
 
 function mousePressed () {
-  background(0, 0, 0.9, 1.0);
   ribbons = [];
   setup();
+  background('white');
 }
 
 // async sleep
