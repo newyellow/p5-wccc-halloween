@@ -28,6 +28,9 @@ let nowMouseDegree = 0;
 let mainCanvas;
 let isMouseOver = false;
 
+let ghostAppearAdder = 1;
+let ghostCounter = 0;
+
 
 async function setup() {
   mainCanvas = createCanvas(windowWidth, windowHeight);
@@ -35,6 +38,7 @@ async function setup() {
   mainCanvas.mouseOut(() => { isMouseOver = false });
   colorMode(HSB);
   background(0, 0, 12, 1.0);
+
 
 
   initObjNoise();
@@ -52,16 +56,15 @@ async function setup() {
   hueRange = random(10, 30);
   bgColor = new NYColor(mainHue, random(20, 60), random(10, 20), 1.0);
 
-  if(hasStroke)
-  {
+  if (hasStroke) {
     strokeWeight(random(1, 2));
     stroke(0, 0, 100);
   }
-  else
-  {
+  else {
     noStroke();
   }
   frameRate(60);
+
 }
 
 function draw() {
@@ -79,7 +82,9 @@ function draw() {
   nowMouseY = lerp(nowMouseY, fakeMouseY, 0.06);
   // }
 
-  for (let i = 0; i < 1; i++) {
+  while (ghostCounter > 0) {
+
+    ghostCounter--;
 
     // let spawnX = random(0, width);
     let spawnX = 0;
@@ -138,13 +143,31 @@ function draw() {
     ribbons[i].update();
   }
 
+  ghostCounter += ghostAppearAdder;
+
+  if(frameRate() < 50)
+  {
+    ghostAppearAdder -= 0.02;
+    console.log('now ghost adder:' + ghostAppearAdder);
+  }
 }
 
+function keyPressed(e) {
+  if (e.key == 's')
+  {
+    let fileName = 'spiral-spirit-' + $fx.hash + '.png';
+    saveCanvas(mainCanvas, fileName);
+  }
+}
 function moveOverCanvas() {
   isMouseOver = true;
 }
 
-function mousePressed () {
+function mousePressed() {
+  refreshWork();
+}
+
+function refreshWork() {
   ribbons = [];
   setup();
   background('white');
